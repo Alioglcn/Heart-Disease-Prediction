@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Heart Disease Analysis</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='assets/img/favicon.ico') }}" type="image/x-icon">
+    <link href="{{ url_for('static', filename='assets/vendor/aos/aos.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/style.css') }}" rel="stylesheet">
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+
+        body {
+            margin: auto;
+            display: flex;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+            background-image: url("https://st3.depositphotos.com/15802718/32365/i/450/depositphotos_323654270-stock-photo-watercolor-tropical-background-monstera-leaves.jpg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .container {
+            width: 650px;
+            padding: 25px;
+            margin: 0 25px;
+            background: transparent;
+            overflow: hidden;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+        }
+
+        .container h2 {
+            font-size: 25px;
+            font-weight: 500;
+            text-align: left;
+            color: white;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #fff;
+        }
+
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px 0;
+            justify-content: space-between;
+        }
+
+        .box-content {
+            display: flex;
+            flex-wrap: wrap;
+            width: 50%;
+            padding-bottom: 15px;
+        }
+
+        .box-content:nth-child(2n) {
+            justify-content: end;
+        }
+
+        .box-content label,
+        .gender-title {
+            width: 95%;
+            color: #fff;
+            margin: 5px 0;
+            font-weight: bold;
+        }
+
+        .gender-title {
+            font-size: 18px;
+        }
+
+        .box-content input {
+            height: 40px;
+            width: 95%;
+            border-radius: 10px;
+            border: 1px solid #fff;
+            outline: none;
+            padding: 0 10px;
+        }
+
+        .gender label {
+            padding: 0 20px 0 5px;
+            font-size: 15px;
+            color: #fff;
+        }
+
+        .gender label,
+        input:hover {
+            cursor: pointer;
+        }
+
+        .alert p {
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .alert a {
+            text-decoration: none;
+            color: aqua;
+            line-height: 1.5;
+            text-align: justify;
+            margin-bottom: 10px;
+        }
+
+        .alert a:hover {
+            cursor: pointer;
+            text-decoration: underline;
+            font-style: italic;
+        }
+
+        .button-container button {
+            width: 100%;
+            padding: 15px 0;
+            background-image: linear-gradient(to right, blue, skyblue);
+            border: none;
+            outline: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .button-container button:hover {
+            cursor: pointer;
+            background-image: linear-gradient(to right, skyblue, blue);
+        }
+        
+        
+        .gender {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        .gender input[type="radio"] {
+            appearance: none;
+            width: 30px;
+            height: 30px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .gender input[type="radio"]::before {
+            content: "";
+            display: block;
+            width: 16px;
+            height: 16px;
+            background-color: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .gender input[type="radio"]:checked::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .gender label {
+            color: #fff;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body style="background-image: url({{ url_for('static', filename='assets/img/background.jpg') }});">
+
+
+  
+    <div class="container">
+        <form action="{{ url_for('predict') }}" method="post" id="heart_disease_form">
+            <h2>Heart Disease Prediction</h2>
+            <div class="content">
+                <div class="box-content">
+                    <label for="fullname">Age</label>
+                    <input type="number" name="age" placeholder="Enter your Age" required>
+                </div>
+
+                <div class="box-content">
+                    <label for="fullname">Chest of Pain</label>
+                    <input type="number" name="chest_pain" placeholder="Enter your pain with degree between 0-3" required>
+                </div>
+                <div class="box-content">
+                    <label for="fullname">Thalach</label>
+                    <input type="number" name="thalach" placeholder="Enter your Thalach level" required>
+                </div>
+
+                <div class="box-content">
+                    <label for="fullname">St Depression</label>
+                    <input type="number" name="st_depression" placeholder="Enter your heart stress" required>
+                </div>
+                <div class="box-content">
+                    <label for="fullname">Slope Of The Peak Exercise</label>
+                    <input type="number" name="slope" placeholder="Enter your slope of the peak" required>
+                </div>
+                
+                
+                   <span class="gender-title">Gender</span>
+                   <div class="gender">
+                       <input type="radio" name="sex" value="1"><label>Male</label>
+                       <input type="radio" name="sex" value="0"><label>Female</label>
+                   </div>                 
+                  <span class="gender-title">Number Of Major Vessels</span>
+                  <div class="gender">
+                      <input type="radio" name="num_vessels" value="0"><label>0</label>
+                      <input type="radio" name="num_vessels" value="1"><label>1</label>
+                      <input type="radio" name="num_vessels" value="2"><label>2</label>
+                      <input type="radio" name="num_vessels" value="3"><label>3</label>                      
+                  </div>
+                  <span class="gender-title">Thalassemia</span>
+                  <div class="gender">
+                      <input type="radio" name="thalassemia" value="1"><label>1</label>
+                      <input type="radio" name="thalassemia" value="2"><label>2</label>
+                      <input type="radio" name="thalassemia" value="3"><label>3</label>                      
+                  </div>   
+                  <span class="gender-title">Angina(Egzersiz sırasında kalpte ağrı)</span>
+                  <div class="gender">
+                      <input type="radio" name="exang" value="1"><label>1</label>
+                      <input type="radio" name="exang" value="0"><label>0</label>
+                  </div>                  
+                               
+            </div>
+            <div type="submit" class="button-container" id="measureButton">
+                <button>Measure</button>
+            </div>
+        </form>
+    </div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function toggleBox(boxId) {
+            var box = $("#" + boxId);
+            if (box.is(":hidden")) {
+                $(".box").slideUp();
+                box.slideDown();
+            } else {
+                box.slideUp();
+            }
+        }
+    </script>
+</body>
+</html>
+
+

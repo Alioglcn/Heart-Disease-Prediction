@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Details of Heart Disease Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+    <!-- Add Plotly.js library -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <style>
+    
+     body{
+         background-image: "{{ url_for('static', filename='assets/img/background.jpg') }}";
+         background-size: cover; /* Resmi sayfanın boyutuna göre kapla */
+         background-repeat: no-repeat; /* Resmi tekrar etme */
+         background-position: center center; /* Resmi sayfanın ortasına hizala */
+     }
+     
+        /* Create a 2x2 grid using Flexbox */
+        .grid-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        /* Style each grid item */
+        .grid-item {
+            flex-basis: 45%;
+            margin-bottom: 20px;
+            background-color: #f2f2f2;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            opacity: 0;
+            animation: fadeInUp 1s forwards;
+        }
+
+        /* Define the animation with vendor prefixes */
+        @-webkit-keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @-moz-keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Style the result div */
+        #resultDiv {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            width: 300px;
+            background-color: #f2f2f2;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        /* Center the image */
+        #imageContainer {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        /* Paragraph style */
+        #paragraphContainer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Change the background color of the chart divs */
+        .chart-div {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        /* Top div style */
+         #topDiv {
+            display: flex;
+            flex-direction: column; /* Display the elements in a column */
+            align-items: center; /* Center align the elements horizontally */
+            text-align: center; /* Center align the text */
+            background-color: #f2f2f2;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 40px;
+            font-family: Arial, sans-serif;
+            opacity: 0;
+            animation: fadeInUp 1s forwards;
+            height: 270px;
+        }
+
+        /* Yuvarlak yükleme animasyonu */
+        .loading {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            animation: spin 1s linear infinite;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            display: block;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hide-body-content {
+            display: none;
+        }
+
+        .heart-image {
+            max-width: 100%;
+            height: 300px;
+        }
+
+        @keyframes rainbow-text {
+            0% {
+                background-position: 0 50%;
+            }
+            100% {
+                background-position: 200% 50%;
+            }
+        }
+
+        .colorful-text {
+            background: linear-gradient(45deg, #F06, #3F9, #06F, #F30);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: rainbow-text 5s linear infinite;
+        }
+
+        .chart-div:hover {
+
+            background: linear-gradient(45deg, #F06, #3F9, #06F, #F30);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: rainbow-text 5s linear infinite;            
+        }
+
+        .custom-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #3498db;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s, transform 0.3s;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 99;
+        }
+
+        .custom-button:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+        
+          .chart-text {
+        background: linear-gradient(45deg, #F06, #3F9, #06F, #F30);
+        background-size: 200% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: rainbow-text 5s linear infinite;
+    }
+
+    @keyframes rainbow-text {
+        0% {
+            background-position: 0 50%;
+        }
+        100% {
+            background-position: 200% 50%;
+        }
+    }
+    
+
+    </style>
+</head>
+<body style="background-image: url({{ url_for('static', filename='assets/img/background.jpg') }});">
+<div class="loading"></div>
+    <!-- Top div -->
+ <div id="topDiv">
+    <button class="custom-button" onclick="redirectToPage()">Back</button>
+    <h1 style="text-align:center" class="chart-text">Heart Disease Risk : {{ prediction_text }}</h1>
+    <div>
+    {% if prediction == 0 %}
+    <img style="width: 160px; height: 150px; background-color: #f2f2f2; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);" src="{{ url_for('static', filename='assets/img/gif0.gif') }}" alt="GIF">
+    {% elif prediction == 1 %}
+    <img style="width: 160px; height: 150px; background-color: #f2f2f2; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);" src="{{ url_for('static', filename='assets/img/gif1.gif') }}" alt="GIF">
+    {% endif %}
+    <h3>Below you can see the analysis of data from 1250 subjects.</h3>
+    </div>
+</div>
+
+
+
+
+<div class="grid-container" data-aos="fade-up" data-aos-delay="100">
+
+
+    <div class="grid-item chart-div" data-aos="fade-up" data-aos-delay="100">
+        {{ scat_graph_div | safe }}
+    </div>
+
+    <div class="grid-item chart-div" data-aos="fade-up" data-aos-delay="100">
+        {{ hist_graph_div | safe }}
+    </div>
+    
+
+    <div class="grid-item chart-div" data-aos="fade-up" data-aos-delay="100">
+        {{ hist_graph_div2 | safe }}
+    </div>
+
+    <div class="grid-item chart-div" data-aos="fade-up" data-aos-delay="100">
+        {{ graph_div_pie | safe }}
+    </div>
+
+    <div class="grid-item chart-div" data-aos="fade-up" data-aos-delay="100">
+        {{ box_graph_div | safe }}
+    </div>
+
+    <div class="grid-item chart-div" data-aos="fade-up" data-aos-delay="100">
+        {{ scat_graph_div2 | safe }}
+    </div>
+</div>
+
+<div data-aos="fade-up" data-aos-delay="100" style="display: flex; flex-direction: column; align-items: center;">
+    <h2 style="text-color: white">Annual number of deaths from heart disease per 100,000 people.</h2>
+    <img style="width:auto;height:auto" class="heart-image" src="{{ url_for('static', filename='assets/img/heart.jpg') }}" alt="">
+</div>
+
+<script>
+    // Function to update the background color of the elements
+    function updateBackgroundColor() {
+        // Get the prediction value from Flask
+        var predictionValue = "{{ prediction }}";
+
+        // Update the background color of the body based on the prediction value
+        var body = document.getElementById('body');
+        if (predictionValue === '0') {
+            body.style.backgroundColor = 'green';
+        } else if (predictionValue === '1') {
+            body.style.backgroundColor = 'red';
+        }
+
+        // Update the background color of the chart divs
+        var chartDivs = document.getElementsByClassName('chart-div');
+        for (var i = 0; i < chartDivs.length; i++) {
+            if (predictionValue === '0') {
+                chartDivs[i].style.backgroundColor = 'green';
+            } else if (predictionValue === '1') {
+                chartDivs[i].style.backgroundColor = 'red';
+            }
+        }
+
+        // Add fadeInUp animation to topDiv
+        var topDiv = document.getElementById('topDiv');
+        topDiv.style.opacity = 0; // Start with opacity 0 to hide the div
+        topDiv.style.animation = 'fadeInUp 1s forwards'; // Apply animation with forwards to keep the last frame
+    }
+
+    function showBodyContent() {
+        // Hide the loading circle
+        document.querySelector('.loading').style.display = 'none';
+        // Show the body content
+        document.querySelector('body').classList.remove('hide-body-content');
+    }
+ 
+
+</script>
+<script>
+
+    
+        AOS.init({
+           duration: 3000 
+          
+       });
+       
+ 
+
+     window.addEventListener('load', function() {
+        document.querySelector('.loading').style.display = 'none';
+        document.querySelector('body').style.visibility = 'visible';
+    });
+    
+    
+</script>
+
+        
+        
