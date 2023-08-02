@@ -29,7 +29,7 @@ The Heart Disease Prediction App is a web-based tool developed using Flask and m
 
 ## Usage
 
-1.Run the Flask application:
+1. Run the Flask application:
   **python app.py**
 
 2. Open your web browser and go to **http://localhost:5000** to access the app.
