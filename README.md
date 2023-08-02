@@ -18,7 +18,7 @@ The Heart Disease Prediction App is a web-based tool developed using Flask and m
 ## Installation
 
 1. Clone the repository:
-      **git clone https://github.com/your-username/heart-disease-prediction.git**
+      **git clone https://github.com/alioglcn/heart-disease-prediction.git**
 
 2. Change into the project directory:
      **cd heart-disease-prediction**
