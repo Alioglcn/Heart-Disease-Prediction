@@ -6,10 +6,10 @@ A Flask web application that predicts the likelihood of heart disease based on u
 
 ## Table of Contents
 
--Description
--Installation
--Usage
--Technologies Used
+* Description
+* Installation
+* Usage
+* Technologies Used
 
 ## Description
 
@@ -17,27 +17,27 @@ The Heart Disease Prediction App is a web-based tool developed using Flask and m
 
 ## Installation
 
-- 1. Clone the repository:
+1. Clone the repository:
       **git clone https://github.com/your-username/heart-disease-prediction.git**
 
-- 2. Change into the project directory:
+2. Change into the project directory:
      **cd heart-disease-prediction**
 
-- 3. Install the required packages:
+3. Install the required packages:
      **pip install -r requirements.txt**
 
 
 ## Usage
 
-- 1.Run the Flask application:
+1.Run the Flask application:
   **python app.py**
 
-- 2. Open your web browser and go to **http://localhost:5000** to access the app.
+2. Open your web browser and go to **http://localhost:5000** to access the app.
 
 ![Predict Form](https://github.com/Alioglcn/Heart-Disease-Prediction/blob/main/static/assets/img/Screenshot%202023-08-01%20at%2023.40.16.png)
 
 
-- 3. Fill in the required information in the form fields and click on the "Measure" button to get the heart disease prediction and see the distribution of datas.
+3. Fill in the required information in the form fields and click on the "Measure" button to get the heart disease prediction and see the distribution of datas.
 
 ![Details Page 1](https://github.com/Alioglcn/Heart-Disease-Prediction/blob/main/static/assets/img/Screenshot%202023-08-01%20at%2023.41.40.png)
 
