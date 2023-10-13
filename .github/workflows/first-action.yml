@@ -1,0 +1,12 @@
+name: Test
+on: [push]
+
+jobs:
+  test_module_1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        run: print("Hello World")
+      - name: Run Test Module 1
+        run: print("bye!")
+
